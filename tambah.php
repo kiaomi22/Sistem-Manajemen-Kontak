@@ -1,6 +1,33 @@
 <?php
 require "data.php";
+
+$nama = "";
+$email = "";
+$telepon = "";
+$errors = [];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nama = $_POST["nama"];
+    $email = $_POST["email"];
+    $telepon = $_POST["telepon"];
+
+    if ($nama == "") $errors["nama"] = "Nama wajib diisi";
+    if ($email == "") $errors["email"] = "Email wajib diisi";
+    if ($telepon == "") $errors["telepon"] = "Telepon wajib diisi";
+
+    if (empty($errors)) {
+        $_SESSION["kontak"][] = [
+            "nama" => $nama,
+            "email" => $email,
+            "telepon" => $telepon
+        ];
+        header("Location: index.php");
+        exit;
+    }
+}
+
 require "layout.php";
+
 
 ob_start();
 ?>
