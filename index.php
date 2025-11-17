@@ -1,65 +1,50 @@
-<?php require "data.php"; ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+<?php
+require "data.php";
+require "layout.php";
 
-<body class="bg-gray-50 min-h-screen p-10">
+ob_start();
+?>
 
-<div class="max-w-5xl mx-auto">
+<a href="tambah.php"
+   class="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-xl 
+          font-semibold shadow hover:bg-blue-700 transition mb-6">
+    ➕ Tambah Kontak
+</a>
 
-    <div class="flex justify-between items-center mb-10">
-        <h1 class="text-4xl font-extrabold text-gray-800 tracking-tight">Manajemen Kontak</h1>
+<div class="bg-white/70 backdrop-blur border border-white/50 shadow-xl rounded-xl overflow-hidden">
 
-        <a href="logout.php" 
-           class="text-red-600 font-semibold hover:text-red-700 hover:underline text-lg transition">
-            Logout
-        </a>
-    </div>
+    <table class="w-full text-left">
+        <thead class="bg-blue-600 text-white">
+            <tr>
+                <th class="p-4 font-semibold">👤 Nama</th>
+                <th class="p-4 font-semibold">📧 Email</th>
+                <th class="p-4 font-semibold">📱 Telepon</th>
+                <th class="p-4 font-semibold">⚙️ Aksi</th>
+            </tr>
+        </thead>
 
-    <a href="tambah.php"
-       class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold
-              shadow-md hover:bg-blue-700 hover:shadow-lg transition mb-5">
-        + Tambah Kontak
-    </a>
+        <tbody class="text-gray-700">
+            <?php foreach ($_SESSION["kontak"] as $id => $k): ?>
+            <tr class="border-b hover:bg-gray-100 transition">
+                <td class="p-4"><?= htmlspecialchars($k['nama']) ?></td>
+                <td class="p-4"><?= htmlspecialchars($k['email']) ?></td>
+                <td class="p-4"><?= htmlspecialchars($k['telepon']) ?></td>
+                <td class="p-4 flex gap-4">
+                    <a href="edit.php?id=<?= $id ?>" 
+                        class="text-blue-700 font-semibold hover:underline">✏️ Edit</a>
 
-    <div class="overflow-hidden bg-white shadow-xl rounded-2xl border border-gray-200">
-
-        <table class="w-full">
-            <thead class="bg-blue-600 text-white">
-                <tr class="text-left">
-                    <th class="p-4 text-sm font-semibold">Nama</th>
-                    <th class="p-4 text-sm font-semibold">Email</th>
-                    <th class="p-4 text-sm font-semibold">Telepon</th>
-                    <th class="p-4 text-sm font-semibold">Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody class="text-gray-700">
-                <?php foreach ($_SESSION["kontak"] as $id => $k): ?>
-                <tr class="border-b hover:bg-gray-50 transition">
-                    <td class="p-4"><?= htmlspecialchars($k['nama']) ?></td>
-                    <td class="p-4"><?= htmlspecialchars($k['email']) ?></td>
-                    <td class="p-4"><?= htmlspecialchars($k['telepon']) ?></td>
-                    <td class="p-4 flex gap-4">
-                        <a href="edit.php?id=<?= $id ?>" 
-                           class="text-blue-600 hover:underline font-semibold">Edit</a>
-
-                        <a href="hapus.php?id=<?= $id ?>"
-                           class="text-red-600 hover:underline font-semibold">
-                           Hapus
-                        </a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-
-        </table>
-    </div>
-
+                    <a href="hapus.php?id=<?= $id ?>"
+                        class="text-red-600 font-semibold hover:underline">
+                        🗑️ Hapus
+                    </a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>
 
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+layout("Dashboard", $content);
+?>
